@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- these values are used to load image files and as the selected values in the settings -->
+    <string-array name="conferences_list">
+        <item>American_Athletic</item>
+        <item>Atlantic_Coast</item>
+        <item>Big_Ten</item>
+        <item>Big_12</item>
+        <item>Conference_USA</item>
+        <item>Division_I_FBS_Independent</item>
+        <item>Mid-American</item>
+        <item>Mountain_West</item>
+        <item>Pac-12</item>
+        <item>Southeastern</item>
+        <item>Sun_Belt</item>
+    </string-array>
+
+    <!-- these values are used when displaying the options to the user -->
+    <string-array name="conferences_list_for_display">
+        <item>American Athletic Conference</item>
+        <item>Atlantic Coast Conference</item>
+        <item>Big Ten Conference</item>
+        <item>Big 12 Conference</item>
+        <item>Conference USA</item>
+        <item>Division I FBS Independents</item>
+        <item>Mid-American conference</item>
+        <item>Mountain West Conference</item>
+        <item>Pac-12 Conference</item>
+        <item>Southeastern Conference</item>
+        <item>Sun Belt Conference</item>
+    </string-array>
+
+    <!-- used to keep track of how many guesses to show to the user -->
+    <string-array name="guesses_list">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+    </string-array>
+</resources>
