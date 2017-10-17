@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is a collection of animations that create the whole animation -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/decelerate_interpolator">
+
+    <!-- Moves view to the left of the parents by 5%. If just want to move the view in relation to itself, remove p -->
+    <translate android:duration="100" android:fromXDelta="0" android:toXDelta="-5%p" />
+
+    <translate android:duration="100" android:fromXDelta="-5%p"
+        android:toXDelta="5%p" android:startOffset="100" />
+
+    <translate android:duration="100" android:fromXDelta="5%p" android:toXDelta="-5%p" android:startOffset="200" />
+</set>
