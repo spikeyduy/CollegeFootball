@@ -11,15 +11,5 @@
         android:persistent="true"
         android:defaultValue="4" />
 
-    <!-- shows the options for the conferences -->
-    <MultiSelectListPreference
-        android:entries="@array/conferences_list"
-        android:entryValues="@array/conferences_list"
-        android:key="pref_conferencesToInclude"
-        android:title="@string/conferences"
-        android:summary="@string/conferences_description"
-        android:persistent="true"
-        android:defaultValue="@string/conferences" />
-
 
 </PreferenceScreen>

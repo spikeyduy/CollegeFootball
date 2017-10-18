@@ -16,12 +16,10 @@ import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String CHOICES = "pref_numberOfChoices";
-    public static final String CONFERENCES = "pref_conferencesToInclude";
 
     private boolean phoneDevice = true; // used to force portrait mode
     private boolean preferencesChanged = true; // reload the app if the preferences have changed.
@@ -88,12 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (preferencesChanged) {
             // now that the default preferences have been set,
-            // initalize MainActivityFragment and start quiz
+            // initialize MainActivityFragment and start quiz
             MainActivityFragment quizFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.quizFragment);
-//            quizFragment.updateGuessRows(PreferenceManager.getDefaultSharedPreferences(this));
-//            quizFragment.updateConferences(PreferenceManager.getDefaultSharedPreferences(this));
+            quizFragment.updateGuessRows(PreferenceManager.getDefaultSharedPreferences(this));
 //            quizFragment.resetQuiz();
-//            preferencesChanged = false;
+            preferencesChanged = false;
         }
     }
 
@@ -108,25 +105,8 @@ public class MainActivity extends AppCompatActivity {
             MainActivityFragment quizFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.quizFragment);
 
             if (key.equals(CHOICES)) { // number of choices
-//                quizFragment.updateGuessRows(sharedPreferences);
+                quizFragment.updateGuessRows(sharedPreferences);
 //                quizFragment.resetQuiz();
-            } else if (key.equals(CONFERENCES)) { // conferences to include
-                // may not need this
-                Set<String> conferences = sharedPreferences.getStringSet(CONFERENCES, null);
-
-                if (conferences != null && conferences.size() > 0) {
-//                    quizFragment.updateConferences(sharedPreferences);
-//                    quizFragment.resetQuiz();
-                } else {
-                    // must select one conference-- set BIG10
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    conferences.add(getString(R.string.default_conference_message));
-                    editor.putStringSet(CONFERENCES, conferences);
-                    editor.apply();
-
-                    // "applying default conference
-                    Toast.makeText(MainActivity.this, R.string.default_conference_message, Toast.LENGTH_SHORT).show();
-                }
             }
 
             // toast to show that the quiz is restarting

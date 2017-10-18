@@ -23,7 +23,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/flagImageView"
+        android:id="@+id/schoolImageView"
         android:gravity="center"
         android:layout_marginBottom="@dimen/spacing"
         android:layout_marginLeft="@dimen/fab_margin"
@@ -36,7 +36,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/guessCountryTextView"
+        android:id="@+id/guessConferenceTextView"
         android:gravity="center_horizontal"
         android:text="@string/guess_conference"/>
 
@@ -93,30 +93,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/row3LinearLayout">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:lines="2"
-            style="@android:style/Widget.Material.Button.Colored"
-            android:textColor="@color/button_text_color"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:lines="2"
-            style="@android:style/Widget.Material.Button.Colored"
-            android:textColor="@color/button_text_color"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/row4LinearLayout">
 
         <Button
             android:layout_width="0dp"
