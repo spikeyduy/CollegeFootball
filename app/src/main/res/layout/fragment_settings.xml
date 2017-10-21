@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Choose the Difficulty"
         android:textStyle="bold"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textColor="@color/colorPrimary"/>
 
     <RadioGroup
@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/twoGuesses"
-            android:text="Two Guesses"
-            android:checked="true"/>
+            android:text="Two Guesses" />
 
         <RadioButton
             android:layout_width="match_parent"
@@ -39,6 +38,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/sixGuesses"
             android:text="Six Guesses"/>
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            />
 
     </RadioGroup>
 
