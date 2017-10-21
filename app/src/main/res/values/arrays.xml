@@ -2,17 +2,17 @@
 <resources>
     <!-- these values are used to load image files and as the selected values in the settings -->
     <string-array name="conferences_list">
-        <item>American_Athletic</item>
-        <item>Atlantic_Coast</item>
-        <item>Big_Ten</item>
-        <item>Big_12</item>
+        <item>American_Athletic_Conference</item>
+        <item>Atlantic_Coast_Conference</item>
+        <item>Big_10_Conference</item>
+        <item>Big_12_Conference</item>
         <item>Conference_USA</item>
-        <item>Division_I_FBS_Independent</item>
-        <item>Mid-American</item>
-        <item>Mountain_West</item>
-        <item>Pac-12</item>
-        <item>Southeastern</item>
-        <item>Sun_Belt</item>
+        <item>Division_I_FBS_Independents</item>
+        <item>MidAmerican_Conference</item>
+        <item>Mountain_West_Conference</item>
+        <item>Pacific-12_Conference</item>
+        <item>Southeastern_Conference</item>
+        <item>Sun_Belt_Conference</item>
     </string-array>
 
     <!-- these values are used when displaying the options to the user -->

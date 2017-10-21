@@ -16,10 +16,15 @@ import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.Set;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String CHOICES = "pref_numberOfChoices";
+    // fill this in onCreate?
+    public static String[] CONFERENCES;
 
     private boolean phoneDevice = true; // used to force portrait mode
     private boolean preferencesChanged = true; // reload the app if the preferences have changed.
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         if (phoneDevice) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        // get all the names from the asset folders, so we can later use it to run through and pull that specific image file during the quiz?
+        CONFERENCES = getResources().getStringArray(R.array.conferences_list);
 
     }
 
@@ -106,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (key.equals(CHOICES)) { // number of choices
                 quizFragment.updateGuessRows(sharedPreferences);
-//                quizFragment.resetQuiz();
+                quizFragment.resetQuiz();
             }
 
             // toast to show that the quiz is restarting

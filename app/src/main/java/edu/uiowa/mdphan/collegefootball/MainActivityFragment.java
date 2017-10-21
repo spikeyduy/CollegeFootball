@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +43,8 @@ public class MainActivityFragment extends Fragment {
     private static final int SCHOOLS_IN_QUIZ = 22;
 
     private List<String> fileNameList; // school file names
-    private List<String> quizConferencesList; // conferences in quiz
+    private List<String> quizSchoolsList; // schools in quiz
+    private Set<String> conferenceSet; // conferences in quiz
     private String correctAnswer;
     private int totalGuesses; // number of guesses made
     private int correctAnswers; // number of correct answers
@@ -66,7 +68,7 @@ public class MainActivityFragment extends Fragment {
 
         // stores the school images
         fileNameList = new ArrayList<>();
-        quizConferencesList = new ArrayList<>();
+        quizSchoolsList = new ArrayList<>();
         random = new SecureRandom();
         handler = new Handler();
 
@@ -76,25 +78,26 @@ public class MainActivityFragment extends Fragment {
         shakeAnimation.setRepeatCount(3); // animation repeats 3 times
 
         // get GUI components
-        quizLinearLayout = (LinearLayout) view.findViewById(R.id.quizLinearLayout);
-        questionNumberTextView = (TextView) view.findViewById(R.id.questionNumberTextView);
-        schoolImageView = (ImageView) view.findViewById(R.id.schoolImageView);
+        quizLinearLayout = view.findViewById(R.id.quizLinearLayout);
+        questionNumberTextView = view.findViewById(R.id.questionNumberTextView);
+        schoolImageView = view.findViewById(R.id.schoolImageView);
         guessLinearLayouts = new LinearLayout[3];
-        guessLinearLayouts[0] = (LinearLayout) view.findViewById(R.id.row1LinearLayout);
-        guessLinearLayouts[1] = (LinearLayout) view.findViewById(R.id.row2LinearLayout);
-        guessLinearLayouts[2] = (LinearLayout) view.findViewById(R.id.row3LinearLayout);
-        answerTextView = (TextView) view.findViewById(R.id.answerTextView);
+        guessLinearLayouts[0] = view.findViewById(R.id.row1LinearLayout);
+        guessLinearLayouts[1] = view.findViewById(R.id.row2LinearLayout);
+        guessLinearLayouts[2] = view.findViewById(R.id.row3LinearLayout);
+        answerTextView = view.findViewById(R.id.answerTextView);
 
         // configure listeners for the guess buttons
         for (LinearLayout row : guessLinearLayouts) {
             for (int column = 0; column < row.getChildCount(); column++) {
                 Button button = (Button) row.getChildAt(column);
+                // // TODO: 10/19/17 create listener for guess buttons 
 //                button.setOnClickListener(guessButtonListener);
             }
         }
 
         // set questionNumberTextView's text
-        // arguments are the text that it is set, and the two placeholders that the text needs. 1 and then the amount of questions in the quiz
+        // arguments are: the text that it is set, and the two placeholders that the text needs. 1 and then the amount of questions in the quiz
         questionNumberTextView.setText(getString(R.string.question, 1, SCHOOLS_IN_QUIZ));
         return view; // return the fragment's view for display
     }
@@ -113,8 +116,54 @@ public class MainActivityFragment extends Fragment {
         for (int row = 0; row < guessRows; row++) {
             guessLinearLayouts[row].setVisibility(View.VISIBLE);
         }
+
     }
 
     // resets the quiz and starts it again
-    
+    public void resetQuiz() {
+        // use AssetManager to get image filenames
+        AssetManager assets = getActivity().getAssets();
+        fileNameList.clear(); // empty list of image files
+
+        try {
+            // get all of the school's images
+            // THIS MAY OR MAY NOT WORK, NEED TO WORK ON THIS
+            // // TODO: 10/19/17 conferenceSet is null
+            for (String conference : conferenceSet) {
+                String[] paths = assets.list(conference);
+
+                for (String path : paths) {
+                    // TODO: filenamelist is not being populated
+                    fileNameList.add(path.replace(".png",""));
+                }
+            }
+        } catch (IOException exception) {
+            Log.e(TAG, "Error loading image file names", exception);
+        }
+
+        correctAnswers = 0; // reset number of correct answers made
+        totalGuesses = 0; // reset total number of guesses made
+        quizSchoolsList.clear(); // clear prior list of quiz schools
+
+        int schoolCounter = 1;
+        int numberOfConferences = 11;
+
+        // add SCHOOLS_IN_QUIZ random file names to quizSchoolList
+        while (schoolCounter <= SCHOOLS_IN_QUIZ) {
+            int randomIndex = random.nextInt(numberOfConferences);
+
+            // get random file name
+            // TODO: indexError, filenamelist is not populated? 
+            String fileName = fileNameList.get(randomIndex);
+
+            // add schools
+            // may be able to just add all the schools to the quizSchoolsList
+            if (!quizSchoolsList.contains(fileName)) {
+                quizSchoolsList.add(fileName);
+                ++schoolCounter;
+            }
+        }
+
+//        loadNextFlag();
+    }
 }

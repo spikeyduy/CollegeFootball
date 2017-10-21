@@ -9,7 +9,6 @@
         android:title="@string/number_of_choices"
         android:summary="@string/number_of_choices_description"
         android:persistent="true"
-        android:defaultValue="4" />
-
+        android:defaultValue="6" />
 
 </PreferenceScreen>

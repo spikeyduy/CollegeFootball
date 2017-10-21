@@ -11,6 +11,8 @@ import android.view.ViewGroup;
  */
 public class SettingsActivityFragment extends Fragment {
 
+    // Need to get the view
+
     public SettingsActivityFragment() {
     }
 
