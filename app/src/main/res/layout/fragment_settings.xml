@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,44 +8,4 @@
     tools:showIn="@layout/activity_settings"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose the Difficulty"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="@color/colorPrimary"/>
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/choicesGroup" >
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/twoGuesses"
-            android:text="Two Guesses" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fourGuesses"
-            android:text="Four Guesses"/>
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/sixGuesses"
-            android:text="Six Guesses"/>
-
-        <Button
-            android:id="@+id/enter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            />
-
-    </RadioGroup>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

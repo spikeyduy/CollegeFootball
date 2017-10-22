@@ -124,6 +124,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     // resets the quiz and starts it again
+    // TODO need to fix this, preferences change but the app crashes before when it resets. Also no school or button names are being populated
     public void resetQuiz() {
         // use AssetManager to get image filenames
         AssetManager assets = getActivity().getAssets();
