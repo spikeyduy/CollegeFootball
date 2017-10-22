@@ -43,7 +43,7 @@
             android:id="@+id/enter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit"
+            android:text="Save"
             />
 
     </RadioGroup>
