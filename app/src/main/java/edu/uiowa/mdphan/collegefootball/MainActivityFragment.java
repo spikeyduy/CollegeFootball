@@ -135,10 +135,12 @@ public class MainActivityFragment extends Fragment {
 //                Log.i(TAG, "Loading paths, current conference: " + conference);
 
                 for (String path : paths) {
+                    String fullPath = conference + '-' + path.replace(".png","");
                     String newPath = path.replace(".png","");
                     fileNameList.add(newPath);
-                    quizSchoolsList.add(newPath);
+                    quizSchoolsList.add(fullPath);
 //                    Log.i(TAG, "Loading school paths, current School: " + newPath);
+//                    Log.i(TAG, "Full folder path: " + fullPath);
                 }
             }
         } catch (IOException exception) {
@@ -151,7 +153,7 @@ public class MainActivityFragment extends Fragment {
         totalGuesses = 0; // reset total number of guesses made
         Collections.shuffle(quizSchoolsList);
 //        Log.i(TAG, "Shuffled SchoolList: " + quizSchoolsList);
-//        loadNextSchool();
+        loadNextSchool();
     }
 
     // after the user guesses a correct Conference, load next school
@@ -159,6 +161,7 @@ public class MainActivityFragment extends Fragment {
     private void loadNextSchool() {
         // get file name of the next school and remove it from the list
         String nextImage = quizSchoolsList.remove(0);
+//        Log.i(TAG, "nextImage: " + nextImage);
         correctAnswer = nextImage; // update correct answer
         answerTextView.setText(""); // clear answerTextView
 
@@ -168,12 +171,12 @@ public class MainActivityFragment extends Fragment {
 
         // extract the conference from the next image's name
         // names in quizSchoolsList should be in "conference-schoolName" setup
-        // name may actually just be the nextImage because of pulling string straight from array
         String conference = nextImage.substring(0, nextImage.indexOf('-'));
+        String schoolSecondName = nextImage.substring(nextImage.indexOf('-')+1,nextImage.length());
 
         // use the assetManager to load next image from assets folder and try to use the InputStream
         AssetManager assets = getActivity().getAssets();
-        try (InputStream stream = assets.open(conference + "/" + nextImage + ".png")) {
+        try (InputStream stream = assets.open(conference + "/" + schoolSecondName + ".png")) {
             // load the asset as a drawable and display on the schoolImageView
             Drawable school = Drawable.createFromStream(stream, nextImage);
             schoolImageView.setImageDrawable(school);
@@ -186,7 +189,8 @@ public class MainActivityFragment extends Fragment {
         Collections.shuffle(fileNameList); // shuffle the file names
 
         // put the correct answer at the end of hte fileNameList
-        int correct = fileNameList.indexOf(correctAnswer);
+        int correct = fileNameList.indexOf(schoolSecondName);
+//        Log.i(TAG, "index of the correct answer: " + correct);
         fileNameList.add(fileNameList.remove(correct));
 
         // add 2, 4, 6 guess buttons based on value of guessRows
@@ -213,8 +217,6 @@ public class MainActivityFragment extends Fragment {
 
     // parses the school flag file name and returns the school name
     private String getSchoolName(String name) {
-        // AGAIN, MAY NOT NEED THIS BECAUSE OF DIRECT ACCESS TO THE STRING ARRAY
-        // MAY HAVE TO CREATE A UNIT TEST THAT MAKES SURE THE SCHOOLLIST IS CONFERENCE-SCHOOLNAME OR JUST SCHOOLNAME
         return name.substring(name.indexOf('-') + 1).replace('-',' ');
     }
 
