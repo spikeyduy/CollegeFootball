@@ -2,7 +2,6 @@ package edu.uiowa.mdphan.collegefootball;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +24,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class MainActivityFragment extends Fragment {
 
@@ -93,7 +89,6 @@ public class MainActivityFragment extends Fragment {
         for (LinearLayout row : guessLinearLayouts) {
             for (int column = 0; column < row.getChildCount(); column++) {
                 Button button = (Button) row.getChildAt(column);
-                // // TODO: 10/19/17 create listener for guess buttons 
                 button.setOnClickListener(guessButtonListener);
             }
         }
@@ -124,7 +119,6 @@ public class MainActivityFragment extends Fragment {
     }
 
     // resets the quiz and starts it again
-    // TODO need to fix this, preferences change but the app crashes before when it resets. Also no school or button names are being populated
     public void resetQuiz() {
         // use AssetManager to get image filenames
         AssetManager assets = getActivity().getAssets();
@@ -135,44 +129,33 @@ public class MainActivityFragment extends Fragment {
         try {
             // get all of the school's images
             // THIS MAY OR MAY NOT WORK, NEED TO WORK ON THIS
+            // conference should be "conference_name"
             for (String conference : conferenceSet) {
                 String[] paths = assets.list(conference);
+//                Log.i(TAG, "Loading paths, current conference: " + conference);
 
                 for (String path : paths) {
-                    fileNameList.add(path.replace(".png",""));
+                    String newPath = path.replace(".png","");
+                    fileNameList.add(newPath);
+                    quizSchoolsList.add(newPath);
+//                    Log.i(TAG, "Loading school paths, current School: " + newPath);
                 }
             }
         } catch (IOException exception) {
             Log.e(TAG, "Error loading image file names", exception);
         }
+//        Log.i(TAG, "fileNameList: " + fileNameList);
+//        Log.i(TAG, "fileNameListSize: " + fileNameList.size());
 
         correctAnswers = 0; // reset number of correct answers made
         totalGuesses = 0; // reset total number of guesses made
-        quizSchoolsList.clear(); // clear prior list of quiz schools
-
-        int schoolCounter = 1;
-        int numberOfConferences = 11;
-
-        // add SCHOOLS_IN_QUIZ random file names to quizSchoolList
-        while (schoolCounter <= SCHOOLS_IN_QUIZ) {
-            int randomIndex = random.nextInt(numberOfConferences);
-
-            // get random file name
-            // MAY NOT NEED TO DO THIS BECAUSE WE SHUFFLE EVERYTIME WE LOAD A NEW SCHOOL, MAYBE JUST POPULATE IT!!!!
-            String fileName = fileNameList.get(randomIndex);
-
-            // add schools
-            // may be able to just add all the schools to the quizSchoolsList
-            if (!quizSchoolsList.contains(fileName)) {
-                quizSchoolsList.add(fileName);
-                ++schoolCounter;
-            }
-        }
-
-        loadNextSchool();
+        Collections.shuffle(quizSchoolsList);
+//        Log.i(TAG, "Shuffled SchoolList: " + quizSchoolsList);
+//        loadNextSchool();
     }
 
     // after the user guesses a correct Conference, load next school
+    // TODO need to fix out of bounds error
     private void loadNextSchool() {
         // get file name of the next school and remove it from the list
         String nextImage = quizSchoolsList.remove(0);
