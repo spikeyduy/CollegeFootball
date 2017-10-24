@@ -17,6 +17,9 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHOICES = "pref_numberOfChoices";
     // fill this in onCreate?
     public static String[] CONFERENCES;
+    public static List<String> conferencesToShow;
 
     private boolean phoneDevice = true; // used to force portrait mode
     private boolean preferencesChanged = true; // reload the app if the preferences have changed.
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        // get all the names from the asset folders, so we can later use it to run through and pull that specific image file during the quiz?
+        // get the conference names for the settings
         CONFERENCES = getResources().getStringArray(R.array.conferences_list);
 
     }

@@ -9,7 +9,7 @@
         <item>Conference_USA</item>
         <item>Division_I_FBS_Independents</item>
         <item>MidAmerican_Conference</item>
-        <item>Moutain_West_Conference</item>
+        <item>Mountain_West_Conference</item>
         <item>Pacific_12_Conference</item>
         <item>Southeastern_Conference</item>
         <item>Sun_Belt_Conference</item>
@@ -19,13 +19,13 @@
     <string-array name="conferences_list_for_display">
         <item>American Athletic Conference</item>
         <item>Atlantic Coast Conference</item>
-        <item>Big Ten Conference</item>
+        <item>Big 10 Conference</item>
         <item>Big 12 Conference</item>
         <item>Conference USA</item>
         <item>Division I FBS Independents</item>
-        <item>Mid-American conference</item>
+        <item>MidAmerican Conference</item>
         <item>Mountain West Conference</item>
-        <item>Pac-12 Conference</item>
+        <item>Pacific 12 Conference</item>
         <item>Southeastern Conference</item>
         <item>Sun Belt Conference</item>
     </string-array>

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class MainActivityFragment extends Fragment {
     private List<String> fileNameList; // school file names
     private List<String> quizSchoolsList; // schools in quiz
     private String[] conferenceSet; // conferences in quiz
+    private List<String> conferenceNameList; // name of the conferences
     private String correctAnswer;
+    private String conference; // correct conference
     private int totalGuesses; // number of guesses made
     private int correctAnswers; // number of correct answers
     private int guessRows; // number of rows displaying guess buttons
@@ -93,8 +96,6 @@ public class MainActivityFragment extends Fragment {
             }
         }
 
-
-
         // set questionNumberTextView's text
         // arguments are: the text that it is set, and the two placeholders that the text needs. 1 and then the amount of questions in the quiz
         questionNumberTextView.setText(getString(R.string.question, 1, SCHOOLS_IN_QUIZ));
@@ -128,8 +129,6 @@ public class MainActivityFragment extends Fragment {
 
         try {
             // get all of the school's images
-            // THIS MAY OR MAY NOT WORK, NEED TO WORK ON THIS
-            // conference should be "conference_name"
             for (String conference : conferenceSet) {
                 String[] paths = assets.list(conference);
 //                Log.i(TAG, "Loading paths, current conference: " + conference);
@@ -157,7 +156,6 @@ public class MainActivityFragment extends Fragment {
     }
 
     // after the user guesses a correct Conference, load next school
-    // TODO need to fix out of bounds error
     private void loadNextSchool() {
         // get file name of the next school and remove it from the list
         String nextImage = quizSchoolsList.remove(0);
@@ -165,13 +163,15 @@ public class MainActivityFragment extends Fragment {
         correctAnswer = nextImage; // update correct answer
         answerTextView.setText(""); // clear answerTextView
 
+        conferenceNameList = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.conferences_list)));
+
         // display the current question number
         // also update the progress of the quiz
         questionNumberTextView.setText(getString(R.string.question, (correctAnswers + 1), SCHOOLS_IN_QUIZ));
 
         // extract the conference from the next image's name
         // names in quizSchoolsList should be in "conference-schoolName" setup
-        String conference = nextImage.substring(0, nextImage.indexOf('-'));
+        conference = nextImage.substring(0, nextImage.indexOf('-'));
         String schoolSecondName = nextImage.substring(nextImage.indexOf('-')+1,nextImage.length());
 
         // use the assetManager to load next image from assets folder and try to use the InputStream
@@ -186,12 +186,13 @@ public class MainActivityFragment extends Fragment {
             Log.e(TAG, "Error loading "  + nextImage, e);
         }
 
-        Collections.shuffle(fileNameList); // shuffle the file names
+        Collections.shuffle(conferenceNameList); // shuffle the file names
 
-        // put the correct answer at the end of hte fileNameList
-        int correct = fileNameList.indexOf(schoolSecondName);
+        // put the correct answer at the end of the list
+        int correct = conferenceNameList.indexOf(conference);
 //        Log.i(TAG, "index of the correct answer: " + correct);
-        fileNameList.add(fileNameList.remove(correct));
+//        Log.i(TAG, "This is to check if this is the correct conference: " + conferenceNameList.get(correct));
+        conferenceNameList.add(conferenceNameList.remove(correct));
 
         // add 2, 4, 6 guess buttons based on value of guessRows
         for (int row = 0; row < guessRows; row++) {
@@ -202,8 +203,9 @@ public class MainActivityFragment extends Fragment {
                 newGuessButton.setEnabled(true);
 
                 // get conference name and set as button
-                String filename = fileNameList.get((row * 2) + column);
-                newGuessButton.setText(getSchoolName(filename));
+                String filename = conferenceNameList.get((row * 2) + column);
+                // set name directly from conferenceNameList
+                newGuessButton.setText(getConferenceName(filename));
             }
         }
 
@@ -211,13 +213,18 @@ public class MainActivityFragment extends Fragment {
         int row = random.nextInt(guessRows); // pick a random row
         int column = random.nextInt(2); // pick a random column
         LinearLayout randomRow = guessLinearLayouts[row]; // get the row
-        String schoolName = getSchoolName(correctAnswer);
-        ((Button) randomRow.getChildAt(column)).setText(schoolName);
+        String correctConferenceName = getConferenceName(conference);
+        ((Button) randomRow.getChildAt(column)).setText(correctConferenceName);
     }
 
     // parses the school flag file name and returns the school name
     private String getSchoolName(String name) {
-        return name.substring(name.indexOf('-') + 1).replace('-',' ');
+        return name.substring(name.indexOf('-') + 1).replace('_',' ');
+    }
+
+    // make the conference name more readable
+    private String getConferenceName(String name) {
+        return name.replace('_',' ');
     }
 
     // animate the entire quizLinearLayout on or off screen
@@ -262,7 +269,7 @@ public class MainActivityFragment extends Fragment {
         public void onClick(View v) {
             Button guessButton = ((Button) v);
             String guess = guessButton.getText().toString();
-            String answer = getSchoolName(correctAnswer);
+            String answer = getConferenceName(conference);
             ++totalGuesses; // increment # of guesses
 
             if (guess.equals(answer)) {
@@ -276,6 +283,7 @@ public class MainActivityFragment extends Fragment {
                 disableButtons();
 
                 // if user has correctly identified 22 schools
+                // TODO need to fix this dialog
                 if (correctAnswers == SCHOOLS_IN_QUIZ) {
                     // DialogFragment to display quiz stats and start new quiz
                     DialogFragment quizResults = new DialogFragment() {
