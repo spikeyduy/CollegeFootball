@@ -284,7 +284,7 @@ public class MainActivityFragment extends Fragment {
 
                 // if user has correctly identified 22 schools
                 // TODO need to fix this dialog
-                if (correctAnswers == SCHOOLS_IN_QUIZ) {
+                if (correctAnswers == 2) {
                     // DialogFragment to display quiz stats and start new quiz
                     DialogFragment quizResults = new DialogFragment() {
                         // create an alertDialog and return it

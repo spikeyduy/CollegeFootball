@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHOICES = "pref_numberOfChoices";
     // fill this in onCreate?
     public static String[] CONFERENCES;
-    public static List<String> conferencesToShow;
 
     private boolean phoneDevice = true; // used to force portrait mode
     private boolean preferencesChanged = true; // reload the app if the preferences have changed.
