@@ -29,7 +29,7 @@ public class FinishFragment extends DialogFragment {
         builder.setPositiveButton(R.string.reset_quiz, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-//                MainActivityFragment.resetQuiz();
+                MainActivityFragment.resetQuiz();
             }
         });
 
