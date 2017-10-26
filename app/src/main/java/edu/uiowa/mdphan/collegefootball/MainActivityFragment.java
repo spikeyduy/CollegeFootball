@@ -1,5 +1,6 @@
 package edu.uiowa.mdphan.collegefootball;
 
+import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class MainActivityFragment extends Fragment {
     private List<String> conferenceNameList; // name of the conferences
     private String correctAnswer;
     private String conference; // correct conference
-    private int totalGuesses; // number of guesses made
+    public static int totalGuesses; // number of guesses made
     private int correctAnswers; // number of correct answers
     private int guessRows; // number of rows displaying guess buttons
     private SecureRandom random; // used to randomize quiz
@@ -263,6 +264,12 @@ public class MainActivityFragment extends Fragment {
         animator.start();
     }
 
+    private void showDialog(View v) {
+        FragmentManager fm = getActivity().getFragmentManager();
+        FinishFragment quizResults = new FinishFragment();
+        quizResults.show(fm,"hello");
+    }
+
     // called when a guess button is touched
     private OnClickListener guessButtonListener = new OnClickListener() {
         @Override
@@ -285,28 +292,29 @@ public class MainActivityFragment extends Fragment {
                 // if user has correctly identified 22 schools
                 // TODO need to fix this dialog
                 if (correctAnswers == 2) {
+                    showDialog(getView());
                     // DialogFragment to display quiz stats and start new quiz
-                    DialogFragment quizResults = new DialogFragment() {
-                        // create an alertDialog and return it
-                        @Override
-                        public Dialog onCreateDialog(Bundle bundle) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setMessage(getString(R.string.results, totalGuesses, (1000 / (double) totalGuesses)));
-
-                            // "reset quiz" button
-                            builder.setPositiveButton(R.string.reset_quiz, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    resetQuiz();
-                                }
-                            });
-
-                            return builder.create(); // return the alert dialog
-                        }
-                    };
+//                    DialogFragment quizResults = new DialogFragment() {
+//                        // create an alertDialog and return it
+//                        @Override
+//                        public Dialog onCreateDialog(Bundle bundle) {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                            builder.setMessage(getString(R.string.results, totalGuesses, (1000 / (double) totalGuesses)));
+//
+//                            // "reset quiz" button
+//                            builder.setPositiveButton(R.string.reset_quiz, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    resetQuiz();
+//                                }
+//                            });
+//
+//                            return builder.create(); // return the alert dialog
+//                        }
+//                    };
 
                     // use fragmentManager to display the dialogfragment
-                    quizResults.setCancelable(false);
-                    quizResults.show(getFragmentManager(), "quiz results");
+//                    quizResults.setCancelable(false);
+//                    quizResults.show(getFragmentManager(), "quiz results");
                 } else { // have not finished the quiz
                     // load the next flag after a 2-second delay
                     handler.postDelayed(
