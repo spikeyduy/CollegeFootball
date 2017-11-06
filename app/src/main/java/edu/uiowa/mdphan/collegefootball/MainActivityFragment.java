@@ -1,5 +1,6 @@
 package edu.uiowa.mdphan.collegefootball;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -42,23 +43,24 @@ public class MainActivityFragment extends Fragment {
 
     private static final int SCHOOLS_IN_QUIZ = 22;
 
-    private List<String> fileNameList; // school file names
-    private List<String> quizSchoolsList; // schools in quiz
-    private String[] conferenceSet; // conferences in quiz
-    private List<String> conferenceNameList; // name of the conferences
-    private String correctAnswer;
-    private String conference; // correct conference
+    private static List<String> fileNameList; // school file names
+    private static List<String> quizSchoolsList; // schools in quiz
+    private static String[] conferenceSet; // conferences in quiz
+    private static List<String> conferenceNameList; // name of the conferences
+    private static String correctAnswer;
+    private static String conference; // correct conference
     public static int totalGuesses; // number of guesses made
-    private int correctAnswers; // number of correct answers
-    private int guessRows; // number of rows displaying guess buttons
-    private SecureRandom random; // used to randomize quiz
+    private static int correctAnswers; // number of correct answers
+    private static int guessRows; // number of rows displaying guess buttons
+    private static SecureRandom random; // used to randomize quiz
     private Handler handler; // used to delay loading next school
     private Animation shakeAnimation; // animation for incorrect guess
-    private LinearLayout quizLinearLayout; // layout that contains quiz
-    private TextView questionNumberTextView; // shows current question number
-    private ImageView schoolImageView; // displays school
-    private LinearLayout[] guessLinearLayouts; // rows of guess buttons
-    private TextView answerTextView; // displays correct answer
+    private static LinearLayout quizLinearLayout; // layout that contains quiz
+    private static TextView questionNumberTextView; // shows current question number
+    private static ImageView schoolImageView; // displays school
+    private static LinearLayout[] guessLinearLayouts; // rows of guess buttons
+    private static TextView answerTextView; // displays correct answer
+    private static Activity activity; // need this to use with static methods
     public MainActivityFragment() {
     }
 
@@ -74,6 +76,7 @@ public class MainActivityFragment extends Fragment {
         random = new SecureRandom();
         handler = new Handler();
 
+        activity = (Activity) view.getContext();
         // load the shake animaton
         // loadAnimation's takes in the context, getActivity will inherit whatever activity this fragment is called from
         shakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.incorrect_shake);
@@ -121,9 +124,9 @@ public class MainActivityFragment extends Fragment {
     }
 
     // resets the quiz and starts it again
-    public void resetQuiz() {
+    public static void resetQuiz() {
         // use AssetManager to get image filenames
-        AssetManager assets = getActivity().getAssets();
+        AssetManager assets = activity.getAssets();
         fileNameList.clear(); // empty list of image files
 
         conferenceSet = MainActivity.CONFERENCES;
@@ -157,18 +160,18 @@ public class MainActivityFragment extends Fragment {
     }
 
     // after the user guesses a correct Conference, load next school
-    private void loadNextSchool() {
+    private static void loadNextSchool() {
         // get file name of the next school and remove it from the list
         String nextImage = quizSchoolsList.remove(0);
 //        Log.i(TAG, "nextImage: " + nextImage);
         correctAnswer = nextImage; // update correct answer
         answerTextView.setText(""); // clear answerTextView
 
-        conferenceNameList = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.conferences_list)));
+        conferenceNameList = new ArrayList(Arrays.asList(activity.getResources().getStringArray(R.array.conferences_list)));
 
         // display the current question number
         // also update the progress of the quiz
-        questionNumberTextView.setText(getString(R.string.question, (correctAnswers + 1), SCHOOLS_IN_QUIZ));
+        questionNumberTextView.setText(activity.getString(R.string.question, (correctAnswers + 1), SCHOOLS_IN_QUIZ));
 
         // extract the conference from the next image's name
         // names in quizSchoolsList should be in "conference-schoolName" setup
@@ -176,7 +179,7 @@ public class MainActivityFragment extends Fragment {
         String schoolSecondName = nextImage.substring(nextImage.indexOf('-')+1,nextImage.length());
 
         // use the assetManager to load next image from assets folder and try to use the InputStream
-        AssetManager assets = getActivity().getAssets();
+        AssetManager assets = activity.getAssets();
         try (InputStream stream = assets.open(conference + "/" + schoolSecondName + ".png")) {
             // load the asset as a drawable and display on the schoolImageView
             Drawable school = Drawable.createFromStream(stream, nextImage);
@@ -224,13 +227,13 @@ public class MainActivityFragment extends Fragment {
     }
 
     // make the conference name more readable
-    private String getConferenceName(String name) {
+    private static String getConferenceName(String name) {
         return name.replace('_',' ');
     }
 
     // animate the entire quizLinearLayout on or off screen
     // EXTRA
-    private void animate(Boolean animateOut) {
+    private static void animate(Boolean animateOut) {
         // prevent animation into the UI for the first flag
         if (correctAnswers == 0) {
             return;
@@ -291,7 +294,7 @@ public class MainActivityFragment extends Fragment {
 
                 // if user has correctly identified 22 schools
                 // TODO need to fix this dialog
-                if (correctAnswers == 2) {
+                if (correctAnswers == SCHOOLS_IN_QUIZ) {
                     showDialog(getView());
                     // DialogFragment to display quiz stats and start new quiz
 //                    DialogFragment quizResults = new DialogFragment() {
